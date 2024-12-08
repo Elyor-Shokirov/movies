@@ -1,7 +1,8 @@
 import React from 'react'
 import { Modal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
-import { movies } from '../constants'
+// import MovieService from '../../services/movie-service'
+import MovieService from '../../services/movie-service'
 import MoviesInfo from '../movies-info/movies-info'
 import RowMoviesItem from '../row-movies-item/row-movies-item'
 import './row-movies.scss'
@@ -10,14 +11,28 @@ class RowMovies extends React.Component {
 		super(props)
 		this.state = {
 			open: false,
+			movies: [],
 		}
+		this.movieService = new MovieService()
+	}
+
+	componentDidMount() {
+		this.getTrendingMovies()
 	}
 
 	onToggleOpen = () => {
 		this.setState(({ open }) => ({ open: !open }))
 	}
+
+	getTrendingMovies = () => {
+		this.movieService
+			.getAllTranding()
+			.then(res => this.setState({ movies: res }))
+	}
+
 	render() {
-		const { open } = this.state
+		const { open, movies } = this.state
+
 		return (
 			<div className='rowmovies'>
 				<div className='rowmovies__top'>
@@ -29,14 +44,15 @@ class RowMovies extends React.Component {
 					<a href='#'>See more</a>
 				</div>
 				<div className='rowmovies__lists'>
-					{movies.map((movie, idx) => (
+					{movies.map(movie => (
 						<RowMoviesItem
-							key={idx}
-							movie={{ ...movie, index: idx }}
+							key={movie.id}
+							movie={movie}
 							onToggleOpen={this.onToggleOpen}
 						/>
 					))}
 				</div>
+
 				<Modal open={open} onClose={this.onToggleOpen}>
 					<MoviesInfo />
 				</Modal>
