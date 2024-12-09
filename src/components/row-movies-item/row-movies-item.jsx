@@ -1,7 +1,7 @@
 import './row-movies-item.scss'
-const RowMoviesItem = ({ movie, onToggleOpen }) => {
+const RowMoviesItem = ({ movie, onOpen }) => {
 	return (
-		<div className='movieitem' onClick={onToggleOpen}>
+		<div className='movieitem' onClick={() => onOpen(movie.id)}>
 			<img src={movie.thumbnail} alt={movie.title} />
 			<h2>
 				{movie.name.length > 18 ? ` ${movie.name.slice(0, 18)}...` : movie.name}

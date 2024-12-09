@@ -15,10 +15,13 @@ class Hero extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getMovie()
+		this.updateMovie()
 	}
 
-	getMovie = () => {
+	updateMovie = () => {
+		this.setState({
+			loading: true,
+		})
 		this.movieService
 			.getRandomMovie()
 			.then(res => this.setState({ movie: res }))
@@ -43,7 +46,12 @@ class Hero extends React.Component {
 						ducimus atque, fuga sit illum at deserunt facere voluptatum neque
 						possimus in numquam nobis animi id harum rerum qui non temporibus.
 					</p>
-					<button className='btn btn__primary'>Details</button>
+					<div>
+						<button className='btn btn__primary'>Details</button>
+						<button className='btn btn__secondary' onClick={this.updateMovie}>
+							Random movie
+						</button>
+					</div>
 				</div>
 				<div className='hero__movie'>
 					{errorContent}
@@ -60,7 +68,7 @@ export default Hero
 const Content = ({ movie }) => {
 	return (
 		<>
-			<img src={movie.thumbnail} alt='Hero Img' />
+			<img src={movie.backdrop_path} alt='Hero Img' />
 			<div className='hero__movie-descr'>
 				<h2>{movie.name}</h2>
 				<p>
@@ -68,8 +76,7 @@ const Content = ({ movie }) => {
 						? `${movie.description.slice(0, 100)}...`
 						: movie.description}
 				</p>
-				<div>
-					<button className='btn btn__secondary'>Random movie</button>
+				<div className='hero__btns'>
 					<button className='btn btn__primary'>Details</button>
 				</div>
 			</div>
