@@ -1,66 +1,52 @@
-import React from 'react'
-import MovieService from '../../services/movie-service'
+import React, { useEffect, useState } from 'react'
+import useMovieService from '../../services/movie-service'
 import Error from '../error/error'
 import Spinner from '../spinner/spinner'
 import './hero.scss'
-class Hero extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			movie: {},
-			loading: true,
-			error: false,
-		}
-		this.movieService = new MovieService()
+const Hero = () => {
+	const [movie, setMovie] = useState(null)
+
+	const { getRandomMovie, loading, error, clearError } = useMovieService()
+
+	useEffect(() => {
+		updateMovie()
+	}, [])
+
+	const updateMovie = () => {
+		clearError()
+		getRandomMovie().then(res => setMovie(res))
 	}
 
-	componentDidMount() {
-		this.updateMovie()
-	}
+	const errorContent = error ? <Error /> : null
+	const loadingContent = loading ? <Spinner /> : null
+	const content = !(error || loading || !movie) ? (
+		<Content movie={movie} />
+	) : null
 
-	updateMovie = () => {
-		this.setState({
-			loading: true,
-		})
-		this.movieService
-			.getRandomMovie()
-			.then(res => this.setState({ movie: res }))
-			.catch(() => this.setState({ error: true }))
-			.finally(() => this.setState({ loading: false }))
-	}
-
-	render() {
-		const { movie, loading, error } = this.state
-
-		const errorContent = error ? <Error /> : null
-		const loadingContent = loading ? <Spinner /> : null
-		const content = !(error || loading) ? <Content movie={movie} /> : null
-
-		return (
-			<div className='hero'>
-				<div className='hero__info'>
-					<h2>FIND MOVIES</h2>
-					<h1>TV shows and more</h1>
-					<p>
-						Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore
-						ducimus atque, fuga sit illum at deserunt facere voluptatum neque
-						possimus in numquam nobis animi id harum rerum qui non temporibus.
-					</p>
-					<div>
-						<button className='btn btn__primary'>Details</button>
-						<button className='btn btn__secondary' onClick={this.updateMovie}>
-							Random movie
-						</button>
-					</div>
-				</div>
-				<div className='hero__movie'>
-					{errorContent}
-					{loadingContent}
-					{content}
+	return (
+		<div className='hero'>
+			<div className='hero__info'>
+				<h2>FIND MOVIES</h2>
+				<h1>TV shows and more</h1>
+				<p>
+					Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore
+					ducimus atque, fuga sit illum at deserunt facere voluptatum neque
+					possimus in numquam nobis animi id harum rerum qui non temporibus.
+				</p>
+				<div>
+					<button className='btn btn__primary'>Details</button>
+					<button className='btn btn__secondary' onClick={updateMovie}>
+						Random movie
+					</button>
 				</div>
 			</div>
-		)
-	}
+			<div className='hero__movie'>
+				{errorContent}
+				{loadingContent}
+				{content}
+			</div>
+		</div>
+	)
 }
 
 export default Hero
