@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import useMovieService from '../../services/movie-service'
 import Error from '../error/error'
 import Spinner from '../spinner/spinner'
@@ -34,7 +35,6 @@ const Hero = () => {
 					possimus in numquam nobis animi id harum rerum qui non temporibus.
 				</p>
 				<div>
-					<button className='btn btn__primary'>Details</button>
 					<button className='btn btn__secondary' onClick={updateMovie}>
 						Random movie
 					</button>
@@ -52,6 +52,8 @@ const Hero = () => {
 export default Hero
 
 const Content = ({ movie }) => {
+	const navigate = useNavigate()
+
 	return (
 		<>
 			<img src={movie.backdrop_path} alt='Hero Img' />
@@ -63,7 +65,12 @@ const Content = ({ movie }) => {
 						: movie.description}
 				</p>
 				<div className='hero__btns'>
-					<button className='btn btn__primary'>Details</button>
+					<button
+						className='btn btn__primary'
+						onClick={() => navigate(`/movie/${movie.id}`)}
+					>
+						Details
+					</button>
 				</div>
 			</div>
 		</>

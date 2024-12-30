@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Modal } from 'react-responsive-modal'
-import 'react-responsive-modal/styles.css'
-// import MovieService from '../../services/movie-service'
-import useMovieService from '../../services/movie-service'
-import Error from '../error/error'
-import MoviesInfo from '../movies-info/movies-info'
-import RowMoviesItem from '../row-movies-item/row-movies-item'
-import Spinner from '../spinner/spinner'
-import './row-movies.scss'
-const RowMovies = () => {
-	const [movies, setMovie] = useState([])
+import Modal from 'react-responsive-modal'
+import { useNavigate } from 'react-router'
+import Error from '../components/error/error'
+import MoviesInfo from '../components/movies-info/movies-info'
+import RowMoviesItem from '../components/row-movies-item/row-movies-item'
+import Spinner from '../components/spinner/spinner'
+import useMovieService from '../services/movie-service'
+
+const TvShowsPage = () => {
+	const [tvShows, setTvShow] = useState([])
 	const [open, setOpen] = useState(false)
 	const [movieID, setMovieID] = useState(null)
 	const [page, setPage] = useState(2)
 	const [newItemLoading, setNewItemLoading] = useState(false)
 
-	const { getAllTranding, getDetailedMovies, loading, error } =
-		useMovieService()
-
+	const { getDetiledSerials, getTvShows, error, loading } = useMovieService()
 	useEffect(() => {
-		getTrendingMovies()
+		getShows()
 	}, [])
 
 	const onClose = () => {
@@ -31,16 +28,15 @@ const RowMovies = () => {
 		setOpen(true)
 	}
 
-	const getTrendingMovies = page => {
-		getAllTranding(page)
-			.then(res => setMovie(movies => [...movies, ...res]))
+	const getShows = page => {
+		getTvShows(page)
+			.then(res => setTvShow(tvShows => [...tvShows, ...res]))
 			.finally(() => setNewItemLoading(false))
 	}
-
 	const getMoreMovies = () => {
 		setPage(page => page + 1)
 		setNewItemLoading(true)
-		getTrendingMovies(page)
+		getShows(page)
 	}
 
 	const errorContent = error ? <Error /> : null
@@ -58,8 +54,7 @@ const RowMovies = () => {
 			</div>
 			{errorContent}
 			{loadingContent}
-			<Content movies={movies} onOpen={onOpen} />
-
+			<Content tvShows={tvShows} onOpen={onOpen} />
 			<div className='rowmovies__loadmore '>
 				<button
 					className='btn btn__secondary'
@@ -70,20 +65,25 @@ const RowMovies = () => {
 				</button>
 			</div>
 			<Modal open={open} onClose={onClose}>
-				<MoviesInfo movieID={movieID} getDetailedMovies={getDetailedMovies} />
+				<MoviesInfo movieID={movieID} getDetailedMovies={getDetiledSerials} />
 			</Modal>
 		</div>
 	)
 }
 
-export default RowMovies
+export default TvShowsPage
 
-const Content = ({ movies, onOpen }) => {
+const Content = ({ tvShows, onOpen }) => {
+	const navigate = useNavigate()
+
 	return (
-		<div className='rowmovies__lists'>
-			{movies.map(movie => (
-				<RowMoviesItem key={movie.id} movie={movie} onOpen={onOpen} />
-			))}
-		</div>
+		<>
+			<div className='rowmovies__lists'>
+				{tvShows &&
+					tvShows.map(tvShow => (
+						<RowMoviesItem key={tvShow.id} movie={tvShow} onOpen={onOpen} />
+					))}
+			</div>
+		</>
 	)
 }

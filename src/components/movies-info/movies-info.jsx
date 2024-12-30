@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import useMovieService from '../../services/movie-service'
 import Error from '../error/error'
 import Spinner from '../spinner/spinner'
 import './movies-info.scss'
-const MoviesInfo = ({ movieID }) => {
+const MoviesInfo = ({ movieID, getDetailedMovies }) => {
 	const [movie, setMovie] = useState(null)
 
-	const { getDetailedMovies, loading, error, clearError } = useMovieService()
+	const { loading, error, clearError } = useMovieService()
 	useEffect(() => {
 		updateMovie()
 	}, [movieID])
 
 	const updateMovie = () => {
 		if (!movieID) {
-			setError(true)
+			error
 		}
 		clearError()
 		getDetailedMovies(movieID).then(res => setMovie(res))
@@ -37,12 +38,19 @@ const MoviesInfo = ({ movieID }) => {
 export default MoviesInfo
 
 const Content = ({ movie }) => {
+	const navigate = useNavigate()
 	return (
 		<>
 			<img src={movie.backdrop_path} alt='Hero Img' />
 			<div className='hero__movie-descr'>
 				<h2>{movie.name}</h2>
 				<p>{movie.description}</p>
+				<button
+					className='btn btn__light'
+					onClick={() => navigate(`movie/${movie.id}`)}
+				>
+					Details
+				</button>
 			</div>
 		</>
 	)

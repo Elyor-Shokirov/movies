@@ -1,13 +1,20 @@
-import Hero from '../hero/hero'
+import { Route, Routes } from 'react-router'
+import DeteiledPage from '../../Pages/DeteiledPage'
+import ErrorPage from '../../Pages/ErrorPage'
+import HomePage from '../../Pages/HomePage'
+import TvShowsPage from '../../Pages/TVshowsPage'
 import Navbar from '../navbar/navbar'
-import RowMovies from '../row-movies/row-movies'
 
 const App = () => {
 	return (
 		<div className='app'>
 			<Navbar />
-			<Hero />
-			<RowMovies />
+			<Routes>
+				<Route path='/' element={<HomePage />} />
+				<Route path='/tv' element={<TvShowsPage />} />
+				<Route path='/movie/:movieID' element={<DeteiledPage />} />
+				<Route path='*' element={<ErrorPage />} />
+			</Routes>
 		</div>
 	)
 }
