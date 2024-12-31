@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router'
 import Slider from 'react-slick'
 import useMovieService from '../../services/movie-service'
 import Error from '../error/error'
@@ -7,19 +8,19 @@ import Spinner from '../spinner/spinner'
 const ActorsCarousel = ({ movieID }) => {
 	const [actors, setActors] = useState([])
 
-	const { getActors, loading, error } = useMovieService()
+	const { getSerialActors, getActors, loading, error } = useMovieService()
+
+	const { pathname } = useLocation()
+	console.log(pathname)
 
 	useEffect(() => {
 		updateMovie()
-	}, [movieID])
-
-	console.log('pop', actors)
+	}, [])
 
 	const updateMovie = () => {
-		if (!movieID) {
-			return
-		}
-		getActors(movieID).then(res => setActors(res))
+		const fetchActors =
+			pathname === `/tv/movie/${movieID}` ? getSerialActors : getActors
+		fetchActors(movieID).then(res => setActors(res))
 	}
 
 	var settings = {

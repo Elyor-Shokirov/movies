@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Modal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
 // import MovieService from '../../services/movie-service'
+import { useLocation } from 'react-router'
 import useMovieService from '../../services/movie-service'
 import Error from '../error/error'
 import MoviesInfo from '../movies-info/movies-info'
@@ -14,6 +15,8 @@ const RowMovies = () => {
 	const [movieID, setMovieID] = useState(null)
 	const [page, setPage] = useState(2)
 	const [newItemLoading, setNewItemLoading] = useState(false)
+
+	const { pathname } = useLocation
 
 	const { getAllTranding, getDetailedMovies, loading, error } =
 		useMovieService()

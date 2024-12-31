@@ -47,7 +47,6 @@ const useMovieService = () => {
 			}`
 		)
 		const tvShows = response.results
-		console.log('were', tvShows)
 		return tvShows && tvShows.map(tvshows => _transformTV(tvshows))
 	}
 
@@ -68,6 +67,16 @@ const useMovieService = () => {
 		)
 		const actors = response.cast
 		return actors && actors.map(actor => _transformActor(actor))
+	}
+
+	const getSerialActors = async id => {
+		const response = await request(
+			`${_apiBase}/tv/${id}/aggregate_credits?${_apiLanguage}&api_key=${
+				import.meta.env.VITE_ACCESS_KEY
+			}`
+		)
+		const serialActors = response.cast
+		return serialActors && serialActors.map(actor => _transformActor(actor))
 	}
 
 	const _transformActor = actor => {
@@ -116,6 +125,7 @@ const useMovieService = () => {
 		clearError,
 		getDetiledSerials,
 		getActors,
+		getSerialActors,
 	}
 }
 

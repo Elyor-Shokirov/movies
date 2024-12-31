@@ -13,8 +13,6 @@ const Carousel = () => {
 		getPopular()
 	}, [])
 
-	console.log('pop', polularMovies)
-
 	const getPopular = () => {
 		getPopularMovie().then(res => setPolularMovies(res.results))
 	}
