@@ -1,13 +1,16 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router'
+import logoText from '../../../public/logo-text.svg'
+import logo from '../../../public/logo.svg'
 import './navbar.scss'
+
 const Navbar = () => {
 	return (
 		<div className='navbar'>
 			<div className='navbar__logo'>
-				<Link to={'/'}>
-					<img src='./logo.svg' alt='Logo' />
-					<img src='./logo-text.svg' alt='Logo-text' />
+				<Link to='/'>
+					<img src={logo} alt='Logo' />
+					<img src={logoText} alt='Logo-text' />
 				</Link>
 			</div>
 			<nav className='navbar__menu'>
@@ -15,14 +18,14 @@ const Navbar = () => {
 					<li>
 						<NavLink
 							className={({ isActive }) => (isActive ? 'active' : '')}
-							to={'/'}
+							to='/'
 						>
 							Home
 						</NavLink>
 					</li>
 					<li>
 						<NavLink
-							to={'/tv'}
+							to='/tv'
 							className={({ isActive }) => (isActive ? 'active' : '')}
 						>
 							Serials
