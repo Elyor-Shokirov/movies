@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import Modal from 'react-responsive-modal'
+import { Modal } from 'react-responsive-modal'
+import 'react-responsive-modal/styles.css'
 import { useNavigate } from 'react-router'
 import Error from '../components/error/error'
 import MoviesInfo from '../components/movies-info/movies-info'
 import RowMoviesItem from '../components/row-movies-item/row-movies-item'
 import Spinner from '../components/spinner/spinner'
 import useMovieService from '../services/movie-service'
+import './tvShows.scss'
 
 const TvShowsPage = () => {
 	const [tvShows, setTvShow] = useState([])

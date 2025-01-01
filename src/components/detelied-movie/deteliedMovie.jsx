@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import useMovieService from '../../services/movie-service'
-import ActorsCarousel from '../carousel/actorsCarousel'
+// import ActorsCarousel from '../actorCarausel/actorsCarousel'
+import ActorsCarousel from '../actorCarausel/actorsCarousel'
 import Error from '../error/error'
 import Spinner from '../spinner/spinner'
 import './deteliedMovie.scss'
@@ -21,9 +22,6 @@ const DeteliedMovie = ({ getDetailedMovies }) => {
 	}, [movieID])
 
 	const updateMovie = () => {
-		if (!movieID) {
-			return
-		}
 		getDetailedMovies(movieID).then(res => setMovie(res))
 	}
 

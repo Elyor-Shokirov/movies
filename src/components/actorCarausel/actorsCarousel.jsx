@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
 import Slider from 'react-slick'
+import 'slick-carousel/slick/slick-theme.css'
+import 'slick-carousel/slick/slick.css'
 import useMovieService from '../../services/movie-service'
 import Error from '../error/error'
 import Spinner from '../spinner/spinner'
+import './actorCarousel.scss'
 
 const ActorsCarousel = ({ movieID }) => {
 	const [actors, setActors] = useState([])
@@ -15,7 +18,7 @@ const ActorsCarousel = ({ movieID }) => {
 
 	useEffect(() => {
 		updateMovie()
-	}, [])
+	}, [pathname])
 
 	const updateMovie = () => {
 		const fetchActors =
@@ -25,7 +28,6 @@ const ActorsCarousel = ({ movieID }) => {
 
 	var settings = {
 		dots: true,
-		// lazyLoad: true,
 		infinite: true,
 		slidesToShow: 8,
 		slidesToScroll: 2,
